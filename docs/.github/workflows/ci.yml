@@ -1,0 +1,20 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required files
+        run: |
+          test -f docs/index.html || (echo "Falta docs/index.html" && exit 1)
+
+      - name: Validate HTML
+        run: |
+          npx --yes html-validate@latest "docs/**/*.html"
